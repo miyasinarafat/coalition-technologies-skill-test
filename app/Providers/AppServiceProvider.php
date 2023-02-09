@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Domain\Project\ProjectRepositoryInterface;
+use App\Infrastructure\Persistance\ProjectRepository;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -13,7 +15,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->singleton(ProjectRepositoryInterface::class, ProjectRepository::class);
     }
 
     /**
