@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\TaskList;
+use App\Domain\Task\TaskList;
 use Illuminate\Http\Request;
 
 class TaskListController extends Controller
@@ -41,7 +41,7 @@ class TaskListController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\TaskList  $taskList
+     * @param  \App\Domain\Task\TaskList  $taskList
      * @return \Illuminate\Http\Response
      */
     public function show(TaskList $taskList)
@@ -52,7 +52,7 @@ class TaskListController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\TaskList  $taskList
+     * @param  \App\Domain\Task\TaskList  $taskList
      * @return \Illuminate\Http\Response
      */
     public function edit(TaskList $taskList)
@@ -64,7 +64,7 @@ class TaskListController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\TaskList  $taskList
+     * @param  \App\Domain\Task\TaskList  $taskList
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, TaskList $taskList)
@@ -75,7 +75,7 @@ class TaskListController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\TaskList  $taskList
+     * @param  \App\Domain\Task\TaskList  $taskList
      * @return \Illuminate\Http\Response
      */
     public function destroy(TaskList $taskList)
