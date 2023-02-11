@@ -70,6 +70,10 @@ class ProjectRepository implements ProjectRepositoryInterface
             ->where('id', $id)
             ->first();
 
+        if (! $project) {
+            return null;
+        }
+
         return $project;
     }
 }

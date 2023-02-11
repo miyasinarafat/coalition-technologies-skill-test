@@ -16,7 +16,7 @@ class TaskListRepository implements TaskListRepositoryInterface
     {
         return TaskList::query()
             ->where('project_id', $projectId)
-            ->with('tasks')
+            ->with(['tasks' => fn ($query) => $query->orderBy('position')])
             ->orderBy('created_at')
             ->get();
     }

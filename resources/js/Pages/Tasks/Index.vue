@@ -92,7 +92,7 @@ defineProps({
                     </div>
                 </div>
 
-                <TaskListItemModal :task="task"/>
+                <TaskListItemModal v-if="task" :task="task"/>
             </div>
         </div>
     </AuthenticatedLayout>

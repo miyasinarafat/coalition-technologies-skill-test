@@ -5,24 +5,26 @@ import {useForm, Link} from '@inertiajs/vue3';
 import {store} from "@/store";
 
 const props = defineProps({
-    card: Object
+    task: Object
 });
 
 const inputTitleRef = ref();
-const isShowingForm = computed(() => props.card.id === store.value.editingCardId);
+const isShowingForm = computed(() => props.task.id === store.value.editingTaskId);
 const form = useForm({
-    title: props.card.title,
+    title: props.task.title,
+    list_id: props.task.list_id,
+    project_id: props.task.project_id,
 });
 
 async function showForm() {
-    store.value.editingCardId = props.card.id;
+    store.value.editingTaskId = props.task.id;
     await nextTick();
     inputTitleRef.value.focus();
 }
 
 function onSubmit() {
-    form.put(route('cards.update', {card: props.card.id}), {
-        onSuccess: () => store.value.editingCardId = null
+    form.put(route('projects.tasks.update', {project: props.task.project_id, task: props.task.id}), {
+        onSuccess: () => store.value.editingTaskId = null
     });
 }
 </script>
@@ -35,28 +37,28 @@ function onSubmit() {
             <form
                 class="p-2.5"
                 v-if="isShowingForm"
-                @keydown.esc="store.editingCardId = null"
+                @keydown.esc="store.editingTaskId = null"
                 @submit.prevent="onSubmit()"
             >
         <textarea
             ref="inputTitleRef"
             v-model="form.title"
             class="block w-full text-sm rounded-md border-gray-300 shadow-sm focus:border-blue-400 focus:ring-blue-400"
-            placeholder="Enter card title..."
+            placeholder="Enter task title..."
             rows="3"
             @keydown.enter.prevent="onSubmit()"
         ></textarea>
 
                 <div class="mt-2 space-x-2">
                     <button
-                        class="px-4 py-2 text-sm font-medium text-white bg-rose-600 hover:bg-rose-500 rounded-md shadow-sm focus:ring-2 focus:ring-offset-2 focus:ring-rose-500 focus:outline-none"
+                        class="px-4 py-2 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-500 rounded-md shadow-sm focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 focus:outline-none"
                         type="submit"
-                    >Save card
+                    >Save task
                     </button>
                     <button
-                        class="px-4 py-2 text-sm font-medium text-gray-700 hover:text-black rounded-md focus:ring-2 focus:ring-offset-2 focus:ring-rose-500 focus:outline-none"
+                        class="px-4 py-2 text-sm font-medium text-gray-700 hover:text-black rounded-md focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 focus:outline-none"
                         type="button"
-                        @click="store.editingCardId = null"
+                        @click="store.editingTaskId = null"
                     >Cancel
                     </button>
                 </div>
@@ -65,10 +67,10 @@ function onSubmit() {
             <template v-if="!isShowingForm">
                 <Link
                     class="text-sm block p-2.5"
-                    :href="route('boards.show', {board: card.board_id, card: card.id})"
+                    :href="route('projects.tasks.index', {project: task.project_id, task: task.id})"
                     preserve-state
                 >
-                    {{ card.title }}
+                    {{ task.title }}
                 </Link>
 
                 <button

@@ -10,7 +10,8 @@ const inputNameRef = ref();
 const formRef = ref();
 const isShowingForm = ref(false);
 const form = useForm({
-    title: ''
+    title: '',
+    project_id: props.project.id,
 });
 
 async function showForm() {
@@ -47,12 +48,12 @@ function onSubmit() {
 
         <div class="mt-2 space-x-2">
             <button
-                class="px-4 py-2 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-md shadow-sm focus:ring-2 focus:ring-offset-2 focus:indigo-500 focus:outline-none"
+                class="px-4 py-2 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-md shadow-sm focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 focus:outline-none"
                 type="submit"
             >Add list
             </button>
             <button
-                class="px-4 py-2 text-sm font-medium text-gray-700 hover:text-black rounded-md focus:ring-2 focus:ring-offset-2 focus:indigo-500 focus:outline-none"
+                class="px-4 py-2 text-sm font-medium text-gray-700 hover:text-black rounded-md focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 focus:outline-none"
                 type="button"
                 @click="isShowingForm = false"
             >Cancel

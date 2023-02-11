@@ -1,11 +1,11 @@
 <script setup>
-import {DotsHorizontalIcon, TrashIcon} from '@heroicons/vue/solid';
+import {DotsHorizontalIcon} from '@heroicons/vue/solid';
 import {Menu, MenuButton, MenuItem, MenuItems} from '@headlessui/vue';
 import {ref, watch} from "vue";
 import TaskListItem from "@/Pages/Tasks/TaskListItem.vue";
 import Draggable from "vuedraggable";
 import {store} from "@/store";
-import {Link, useForm} from '@inertiajs/vue3';
+import {Link, useForm, router} from '@inertiajs/vue3';
 import TaskListItemCreateForm from "@/Pages/Tasks/TaskListItemCreateForm.vue";
 
 const props = defineProps({
@@ -15,15 +15,14 @@ const props = defineProps({
 const form = useForm({
     position: null,
     list_id: null,
-
 });
 
 const listRef = ref();
-const cards = ref(props.list.cards);
+const tasks = ref(props.list.tasks);
 
-watch(() => props.list.cards, (newCards) => cards.value = newCards);
+watch(() => props.list.tasks, (newTasks) => tasks.value = newTasks);
 
-function onCardCreated() {
+function onTaskCreated() {
     listRef.value.scrollTop = listRef.value.scrollHeight;
 }
 
@@ -33,23 +32,23 @@ function onChange(e) {
     if (!item) return;
 
     let index = item.newIndex;
-    let prevCard = cards.value[index - 1];
-    let nextCard = cards.value[index + 1];
-    let card = cards.value[index];
+    let prevTask = tasks.value[index - 1];
+    let nextTask = tasks.value[index + 1];
+    let task = tasks.value[index];
 
-    let position = card.position;
+    let position = task.position;
 
-    if (prevCard && nextCard) {
-        position = (prevCard.position + nextCard.position) / 2;
-    } else if (prevCard) {
-        position = prevCard.position + (prevCard.position / 2);
-    } else if (nextCard) {
-        position = nextCard.position / 2;
+    if (prevTask && nextTask) {
+        position = (prevTask.position + nextTask.position) / 2;
+    } else if (prevTask) {
+        position = prevTask.position + (prevTask.position / 2);
+    } else if (nextTask) {
+        position = nextTask.position / 2;
     }
 
-    form.put(route('cards.move', {card: card.id}), {
+    router.put(route('projects.tasks.move', {project: task.project_id, task: task.id}), {
         position: position,
-        list_id: props.list.id
+        list_id: props.list.id,
     });
 }
 
@@ -78,13 +77,6 @@ function onChange(e) {
                 >
                     <MenuItems class="overflow-hidden absolute left-0 mt-2 w-40 bg-white rounded-md border shadow-lg origin-top-left focus:outline-none">
                         <MenuItem v-slot="{active}">
-                            <a
-                                :class="{'bg-gray-100': active}"
-                                class="block px-4 py-2 text-sm text-gray-700"
-                                href="#"
-                            >Add card</a>
-                        </MenuItem>
-                        <MenuItem v-slot="{active}">
                             <Link
                                 :href="route('projects.tasks.list.delete', {project: props.list.project_id, list: props.list.id})"
                                 method="delete"
@@ -105,18 +97,18 @@ function onChange(e) {
                 class="overflow-y-auto flex-1 px-3"
             >
                 <Draggable
-                    :disabled="!!store.editingCardId"
-                    v-model="cards"
+                    :disabled="!!store.editingTaskId"
+                    v-model="tasks"
                     class="space-y-3"
                     drag-class="drag"
                     ghost-class="ghost"
-                    group="cards"
+                    group="tasks"
                     item-key="id"
                     tag="ul"
                     @change="onChange"
                 >
                     <template #item="{element}">
-                        <TaskListItem :card="element"/>
+                        <TaskListItem :task="element"/>
                     </template>
                 </Draggable>
             </div>
@@ -124,7 +116,7 @@ function onChange(e) {
             <div class="px-3 mt-3">
                 <TaskListItemCreateForm
                     :list="list"
-                    @created="onCardCreated()"
+                    @created="onTaskCreated()"
                 />
             </div>
         </div>

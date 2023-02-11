@@ -2,36 +2,40 @@
 import {computed, defineProps, watch} from 'vue'
 import {Dialog, DialogPanel, TransitionChild, TransitionRoot,} from '@headlessui/vue';
 import {TrashIcon} from "@heroicons/vue/solid";
-import {Link, useForm} from "@inertiajs/vue3";
+import {Link, useForm, router} from "@inertiajs/vue3";
 
 const props = defineProps({
-    card: Object
+    task: Object
 });
 
-const isOpen = computed(() => !!props.card);
+const isOpen = computed(() => !!props.task);
 
 const form = useForm({
-    title: props.card?.title,
-    description: props.card?.description,
-    redirectUrl: `/boards/${props.card?.board_id}`
+    list_id: props.task?.list_id,
+    project_id: props.task?.project_id,
+    title: props.task?.title,
+    description: props.task?.description,
+    redirectUrl: `/projects/${props.task?.project_id}/tasks`
 });
 
-watch(() => props.card, (card) => {
-    if (card) {
-        form.title = card.title;
-        form.description = card.description;
-        form.redirectUrl = `/boards/${card.board_id}`
+watch(() => props.task, (task) => {
+    if (task) {
+        form.list_id = task.list_id;
+        form.project_id = task.project_id;
+        form.title = task.title;
+        form.description = task.description;
+        form.redirectUrl = `/projects/${props.task?.project_id}/tasks`
     }
 });
 
 function closeModal() {
-    form.get(route('boards.show', {board: props.card.board_id}), {}, {
+    router.get(route('projects.tasks.index', {project: props.task.project_id}), {}, {
         preserveState: true
     });
 }
 
 function onSubmit() {
-    form.put(route('cards.update', {card: props.card.id}));
+    form.put(route('projects.tasks.update', {project: props.task.project_id, task: props.task.id}));
 }
 </script>
 
@@ -109,12 +113,12 @@ function onSubmit() {
 
                                     <div class="mt-2 space-x-2">
                                         <button
-                                            class="px-4 py-2 text-sm font-medium text-white bg-rose-600 rounded-md shadow-sm hover:bg-rose-500 focus:ring-2 focus:ring-offset-2 focus:ring-rose-500 focus:outline-none"
+                                            class="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-md shadow-sm hover:bg-indigo-500 focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 focus:outline-none"
                                             type="submit"
-                                        >Save card
+                                        >Save task
                                         </button>
                                         <button
-                                            class="px-4 py-2 text-sm font-medium text-gray-700 rounded-md hover:text-black focus:ring-2 focus:ring-offset-2 focus:ring-rose-500 focus:outline-none"
+                                            class="px-4 py-2 text-sm font-medium text-gray-700 rounded-md hover:text-black focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 focus:outline-none"
                                             type="button"
                                             @click="closeModal()"
                                         >Cancel
@@ -126,13 +130,13 @@ function onSubmit() {
                                         Actions
                                     </h3>
                                     <Link
-                                        :href="`/cards/${card?.id}`"
+                                        :href="route('projects.tasks.delete', {project: task.project_id, list: task.list_id, task: task.id})"
                                         method="delete"
                                         as="button"
-                                        class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-gray-200 rounded-md shadow-sm hover:bg-gray-300 focus:ring-2 focus:ring-offset-2 focus:ring-rose-500 focus:outline-none"
+                                        class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-gray-200 rounded-md shadow-sm hover:bg-gray-300 focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 focus:outline-none"
                                     >
                                         <TrashIcon class="mr-1 -ml-1 w-4 h-4 shrink-0"/>
-                                        <span>Delete card</span>
+                                        <span>Delete task</span>
                                     </Link>
                                 </div>
                             </div>

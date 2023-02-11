@@ -10,21 +10,21 @@ const props = defineProps({
 const emit = defineEmits(['created']);
 
 const inputTitleRef = ref();
-const isShowingForm = computed(() => props.list.id === store.value.listCreatingCardId);
+const isShowingForm = computed(() => props.list.id === store.value.listCreatingId);
 const form = useForm({
     title: '',
     list_id: props.list.id,
-    board_id: props.list.board_id
+    project_id: props.list.project_id
 });
 
 async function showForm() {
-    store.value.listCreatingCardId = props.list.id;
+    store.value.listCreatingId = props.list.id;
     await nextTick();
     inputTitleRef.value.focus();
 }
 
 function onSubmit() {
-    form.post(route('cards.store'), {
+    form.post(route('projects.tasks.store', {project: props.list.project_id}), {
         onSuccess: () => {
             form.reset();
             inputTitleRef.value.focus();
@@ -35,7 +35,7 @@ function onSubmit() {
 </script>
 <template>
     <form
-        @keydown.esc="store.listCreatingCardId = null"
+        @keydown.esc="store.listCreatingId = null"
         v-if="isShowingForm"
         @submit.prevent="onSubmit()"
     >
@@ -45,19 +45,19 @@ function onSubmit() {
         rows="3"
         @keydown.enter.prevent="onSubmit()"
         class="block w-full text-sm rounded-md border-gray-300 shadow-sm focus:border-blue-400 focus:ring-blue-400"
-        placeholder="Enter card title..."
+        placeholder="Enter task title..."
     ></textarea>
 
         <div class="mt-2 space-x-2">
             <button
-                class="px-4 py-2 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-500 rounded-md shadow-sm focus:ring-2 focus:ring-offset-2 focus:indigo-500 focus:outline-none"
+                class="px-4 py-2 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-500 rounded-md shadow-sm focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 focus:outline-none"
                 type="submit"
-            >Add card
+            >Add task
             </button>
             <button
-                class="px-4 py-2 text-sm font-medium text-gray-700 hover:text-black rounded-md focus:ring-2 focus:ring-offset-2 focus:indigo-500 focus:outline-none"
+                class="px-4 py-2 text-sm font-medium text-gray-700 hover:text-black rounded-md focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 focus:outline-none"
                 type="button"
-                @click="store.listCreatingCardId = null"
+                @click="store.listCreatingId = null"
             >Cancel
             </button>
         </div>
@@ -68,6 +68,6 @@ function onSubmit() {
         v-if="!isShowingForm"
         class="flex items-center p-2 text-sm font-medium text-gray-600 hover:text-black hover:bg-gray-300 w-full rounded-md">
         <PlusIcon class="h-5 w-5"></PlusIcon>
-        <span class="ml-1">Add card</span>
+        <span class="ml-1">Add task</span>
     </button>
 </template>

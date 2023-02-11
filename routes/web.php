@@ -31,12 +31,14 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 
     // Tasks
     Route::prefix('projects/{project}/tasks')->name('projects.tasks.')->group(function () {
-        Route::get('/', [TaskController::class, 'index'])->name('index');
+        Route::get('/{task?}', [TaskController::class, 'index'])->name('index');
+        Route::post('/', [TaskController::class, 'store'])->name('store');
         Route::post('lists', [TaskController::class, 'listStore'])->name('list.store');
         Route::delete('lists/{list}', [TaskController::class, 'listDestroy'])->name('list.delete');
-        Route::get('{project}/edit', [ProjectController::class, 'edit'])->name('edit');
-        Route::put('{project}', [ProjectController::class, 'update'])->name('update');
-        Route::delete('{project}', [ProjectController::class, 'destroy'])->name('delete');
+        Route::get('{task}/edit', [TaskController::class, 'edit'])->name('edit');
+        Route::put('{task}', [TaskController::class, 'update'])->name('update');
+        Route::put('{task}/move', [TaskController::class, 'move'])->name('move');
+        Route::delete('{list}/{task}', [TaskController::class, 'destroy'])->name('delete');
     });
 });
 
