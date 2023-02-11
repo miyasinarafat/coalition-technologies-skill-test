@@ -1,6 +1,6 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import {Head, Link} from '@inertiajs/vue3';
+import {Head} from '@inertiajs/vue3';
 import TaskList from "@/Pages/Tasks/TaskList.vue";
 import TaskListCreateForm from "@/Pages/Tasks/TaskListCreateForm.vue";
 import TaskListItemModal from "@/Pages/Tasks/TaskListItemModal.vue";

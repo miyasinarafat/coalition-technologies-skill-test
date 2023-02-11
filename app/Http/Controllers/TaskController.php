@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Domain\Project\Project;
 use App\Domain\Project\ProjectRepositoryInterface;
-use App\Domain\Task\Task;
 use App\Domain\Task\TaskFactory;
 use App\Domain\Task\TaskListFactory;
 use App\Domain\Task\TaskListRepositoryInterface;
