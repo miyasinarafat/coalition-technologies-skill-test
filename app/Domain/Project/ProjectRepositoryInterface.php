@@ -32,4 +32,11 @@ interface ProjectRepositoryInterface
      * @return bool|null
      */
     public function delete(Project $project): ?bool;
+
+    /**
+     * @param int $id
+     * @param int $userId
+     * @return Project|null
+     */
+    public function getById(int $id, int $userId): ?Project;
 }

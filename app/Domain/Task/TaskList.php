@@ -5,12 +5,22 @@ namespace App\Domain\Task;
 use App\Domain\Project\Project;
 use App\Models\User;
 use Database\Factories\TaskListFactory;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
+/***
+ * @property-read int id
+ * @property int user_id
+ * @property int project_id
+ * @property string title
+ * @property-read Collection $tasks
+ * @property-read Project $project
+ * @property-read User $user
+ */
 class TaskList extends Model
 {
     use HasFactory;

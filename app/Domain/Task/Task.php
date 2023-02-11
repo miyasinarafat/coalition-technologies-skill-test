@@ -10,6 +10,18 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/***
+ * @property-read int id
+ * @property int user_id
+ * @property int project_id
+ * @property int list_id
+ * @property string title
+ * @property string description
+ * @property double position
+ * @property-read TaskList $list
+ * @property-read Project $project
+ * @property-read User $user
+ */
 class Task extends Model
 {
     use HasFactory;

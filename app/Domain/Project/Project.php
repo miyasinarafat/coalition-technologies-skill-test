@@ -5,6 +5,7 @@ namespace App\Domain\Project;
 use App\Domain\Task\TaskList;
 use App\Models\User;
 use Database\Factories\ProjectFactory;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -15,6 +16,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property-read int id
  * @property int user_id
  * @property string title
+ * @property-read Collection $lists
+ * @property-read User $user
  */
 class Project extends Model
 {

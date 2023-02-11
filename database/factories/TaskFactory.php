@@ -25,7 +25,7 @@ class TaskFactory extends Factory
      */
     public function definition()
     {
-        /** @var TaskList $column */
+        /** @var TaskList $list */
         $list = TaskList::factory()->create();
 
         return [

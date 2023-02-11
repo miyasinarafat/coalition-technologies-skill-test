@@ -18,6 +18,7 @@ class ProjectRepository implements ProjectRepositoryInterface
     {
         return Project::query()
             ->where('user_id', $userId)
+            ->orderByDesc('created_at')
             ->paginate($perPage, ['*'], 'page', $page);
     }
 
@@ -54,5 +55,21 @@ class ProjectRepository implements ProjectRepositoryInterface
     public function delete(Project $project): ?bool
     {
         return $project->delete();
+    }
+
+    /**
+     * @param int $id
+     * @param int $userId
+     * @return Project|null
+     */
+    public function getById(int $id, int $userId): ?Project
+    {
+        /** @var Project $project */
+        $project = Project::query()
+            ->where('user_id', $userId)
+            ->where('id', $id)
+            ->first();
+
+        return $project;
     }
 }

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\TaskController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -18,12 +19,25 @@ use Inertia\Inertia;
 */
 
 Route::group(['middleware' => ['auth', 'verified']], function () {
+    // Projects
     Route::get('dashboard', [ProjectController::class, 'index'])->name('dashboard');
-    Route::get('projects/create', [ProjectController::class, 'create'])->name('projects.create');
-    Route::post('projects', [ProjectController::class, 'store'])->name('projects.store');
-    Route::get('projects/{project}/edit', [ProjectController::class, 'edit'])->name('projects.edit');
-    Route::put('projects/{project}', [ProjectController::class, 'update'])->name('projects.update');
-    Route::delete('projects/{project}', [ProjectController::class, 'destroy'])->name('projects.delete');
+    Route::prefix('projects')->name('projects.')->group(function () {
+        Route::get('create', [ProjectController::class, 'create'])->name('create');
+        Route::post('/', [ProjectController::class, 'store'])->name('store');
+        Route::get('{project}/edit', [ProjectController::class, 'edit'])->name('edit');
+        Route::put('{project}', [ProjectController::class, 'update'])->name('update');
+        Route::delete('{project}', [ProjectController::class, 'destroy'])->name('delete');
+    });
+
+    // Tasks
+    Route::prefix('projects/{project}/tasks')->name('projects.tasks.')->group(function () {
+        Route::get('/', [TaskController::class, 'index'])->name('index');
+        Route::post('lists', [TaskController::class, 'listStore'])->name('list.store');
+        Route::delete('lists/{list}', [TaskController::class, 'listDestroy'])->name('list.delete');
+        Route::get('{project}/edit', [ProjectController::class, 'edit'])->name('edit');
+        Route::put('{project}', [ProjectController::class, 'update'])->name('update');
+        Route::delete('{project}', [ProjectController::class, 'destroy'])->name('delete');
+    });
 });
 
 Route::get('/', function () {

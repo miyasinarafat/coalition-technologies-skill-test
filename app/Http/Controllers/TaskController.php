@@ -2,35 +2,71 @@
 
 namespace App\Http\Controllers;
 
+use App\Domain\Project\Project;
+use App\Domain\Project\ProjectRepositoryInterface;
 use App\Domain\Task\Task;
+use App\Domain\Task\TaskListFactory;
+use App\Domain\Task\TaskListRepositoryInterface;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class TaskController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
+    public function __construct(
+        private readonly ProjectRepositoryInterface $projectRepository,
+        private readonly TaskListRepositoryInterface $taskListRepository,
+    ) {
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @param int $project
+     * @return Response
      */
-    public function create()
+    public function index(int $project): Response
     {
-        //
+        /** @var Project $dbProject */
+        $dbProject = $this->projectRepository->getById($project, Auth::id());
+        $lists = $this->taskListRepository->getList($project);
+
+        return Inertia::render('Tasks/Index', [
+            'project' => $dbProject,
+            'lists' => $lists,
+        ]);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param Request $request
+     * @param int $project
+     * @return RedirectResponse
+     * @throws ValidationException
+     */
+    public function listStore(Request $request, int $project): RedirectResponse
+    {
+        $list = TaskListFactory::fromArray(
+            array_merge(
+                $request->all(),
+                [
+                    'project_id' => $project,
+                ]
+            )
+        );
+        $this->taskListRepository->create($list);
+
+        return redirect()->back();
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -41,7 +77,7 @@ class TaskController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Domain\Task\Task  $task
+     * @param Task $task
      * @return \Illuminate\Http\Response
      */
     public function show(Task $task)
@@ -52,7 +88,7 @@ class TaskController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Domain\Task\Task  $task
+     * @param Task $task
      * @return \Illuminate\Http\Response
      */
     public function edit(Task $task)
@@ -63,8 +99,8 @@ class TaskController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Domain\Task\Task  $task
+     * @param Request $request
+     * @param Task $task
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Task $task)
@@ -75,11 +111,25 @@ class TaskController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Domain\Task\Task  $task
+     * @param Task $task
      * @return \Illuminate\Http\Response
      */
     public function destroy(Task $task)
     {
         //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param int $project
+     * @param int $list
+     * @return RedirectResponse
+     */
+    public function listDestroy(int $project, int $list): RedirectResponse
+    {
+        $this->taskListRepository->delete($project, $list);
+
+        return redirect()->back();
     }
 }

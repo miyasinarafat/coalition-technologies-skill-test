@@ -63,19 +63,21 @@ class ProjectController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param Project $project
+     * @param int $project
      * @return RedirectResponse|Response
      */
-    public function edit(Project $project): Response|RedirectResponse
+    public function edit(int $project): Response|RedirectResponse
     {
-        if ($project->user_id !== Auth::id()) {
+        $dbProject = $this->projectRepository->getById($project, Auth::id());
+
+        if (! $dbProject) {
             return redirect()
                 ->route('dashboard')
                 ->withErrors(["You're not allowed to access this project"]);
         }
 
         return Inertia::render('Projects/Edit', [
-            'project' => $project,
+            'project' => $dbProject,
         ]);
     }
 
@@ -83,14 +85,17 @@ class ProjectController extends Controller
      * Update the specified resource in storage.
      *
      * @param Request $request
-     * @param Project $project
+     * @param int $project
      * @return RedirectResponse
      * @throws ValidationException
      */
-    public function update(Request $request, Project $project): RedirectResponse
+    public function update(Request $request, int $project): RedirectResponse
     {
         $candidateProject = ProjectFactory::fromArray($request->all());
-        $this->projectRepository->update($project, $candidateProject);
+
+        /** @var Project $dbProject */
+        $dbProject = $this->projectRepository->getById($project, Auth::id());
+        $this->projectRepository->update($dbProject, $candidateProject);
 
         return redirect()
             ->route('dashboard')
@@ -100,18 +105,20 @@ class ProjectController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param Project $project
+     * @param int $project
      * @return RedirectResponse
      */
-    public function destroy(Project $project): RedirectResponse
+    public function destroy(int $project): RedirectResponse
     {
-        if ($project->user_id !== Auth::id()) {
+        $dbProject = $this->projectRepository->getById($project, Auth::id());
+
+        if (! $dbProject) {
             return redirect()
                 ->route('dashboard')
                 ->withErrors(["You're not allowed to access this project"]);
         }
 
-        $this->projectRepository->delete($project);
+        $this->projectRepository->delete($dbProject);
 
         return redirect()
             ->route('dashboard')
