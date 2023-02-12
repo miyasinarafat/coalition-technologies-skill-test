@@ -12,13 +12,13 @@ class ProjectRepositoryTest extends TestCase
 {
     use RefreshDatabase;
 
-    private ProjectRepositoryInterface $projectRepository;
+    private ProjectRepositoryInterface $repository;
 
     public function setUp(): void
     {
         parent::setUp();
 
-        $this->projectRepository = resolve(ProjectRepositoryInterface::class);
+        $this->repository = resolve(ProjectRepositoryInterface::class);
     }
 
     public function testGetAllProject(): void
@@ -30,7 +30,7 @@ class ProjectRepositoryTest extends TestCase
            'user_id' => $user->id,
         ]);
 
-        $result = $this->projectRepository->getList($user->id);
+        $result = $this->repository->getList($user->id);
         /** @var Project $project */
         $project = $result->first();
 
@@ -49,7 +49,7 @@ class ProjectRepositoryTest extends TestCase
             'title' => 'Title one',
         ]);
 
-        $result = $this->projectRepository->create($project);
+        $result = $this->repository->create($project);
 
         $this->assertNotNull($result);
         $this->assertInstanceOf(Project::class, $result);
@@ -64,7 +64,7 @@ class ProjectRepositoryTest extends TestCase
             'title' => 'Title one',
         ]);
 
-        $result = $this->projectRepository->update($project, $candidateProject);
+        $result = $this->repository->update($project, $candidateProject);
 
         $this->assertEquals($candidateProject->title, $result->title);
     }
@@ -74,7 +74,7 @@ class ProjectRepositoryTest extends TestCase
         /** @var Project $project */
         $project = Project::factory()->create();
 
-        $result = $this->projectRepository->delete($project);
+        $result = $this->repository->delete($project);
 
         $this->assertIsBool($result);
         $this->assertEquals(true, $result);
@@ -85,7 +85,7 @@ class ProjectRepositoryTest extends TestCase
         /** @var Project $project */
         $project = Project::factory()->create();
 
-        $result = $this->projectRepository->getById($project->id, $project->user_id);
+        $result = $this->repository->getById($project->id, $project->user_id);
 
         $this->assertNotNull($result);
         $this->assertInstanceOf(Project::class, $result);
