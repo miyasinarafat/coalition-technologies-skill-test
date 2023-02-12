@@ -22,38 +22,33 @@ class TaskRepository implements TaskRepositoryInterface
     }
 
     /**
-     * @param int $task
+     * @param Task $task
      * @param Task $candidateTask
      * @return Task
      */
-    public function update(int $task, Task $candidateTask): Task
+    public function update(Task $task, Task $candidateTask): Task
     {
-        /** @var Task $dbTask */
-        $dbTask = Task::query()->find($task);
+        $task->title = $candidateTask->title;
+        $task->description = $candidateTask->description;
+        $task->save();
 
-        $dbTask->title = $candidateTask->title;
-        $dbTask->description = $candidateTask->description;
-        $dbTask->save();
-
-        return $dbTask;
+        return $task;
     }
 
     /**
-     * @param int $task
+     * @param Task $task
      * @param int $list
      * @param int $position
      * @return Task
      */
-    public function move(int $task, int $list, mixed $position): Task
+    public function move(Task $task, int $list, mixed $position): Task
     {
-        /** @var Task $dbTask */
-        $dbTask = Task::query()->find($task);
-        $dbTask->update([
+        $task->update([
             'list_id' => $list,
             'position' => round($position, 5),
         ]);
 
-        return $dbTask;
+        return $task;
     }
 
     /**

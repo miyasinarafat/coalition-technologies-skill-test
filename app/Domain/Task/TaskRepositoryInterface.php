@@ -11,19 +11,19 @@ interface TaskRepositoryInterface
     public function create(Task $task): ?Task;
 
     /**
-     * @param int $task
+     * @param Task $task
      * @param Task $candidateTask
      * @return Task
      */
-    public function update(int $task, Task $candidateTask): Task;
+    public function update(Task $task, Task $candidateTask): Task;
 
     /**
-     * @param int $task
+     * @param Task $task
      * @param int $list
      * @param int $position
      * @return Task
      */
-    public function move(int $task, int $list, mixed $position): Task;
+    public function move(Task $task, int $list, mixed $position): Task;
 
     /**
      * @param int $projectId

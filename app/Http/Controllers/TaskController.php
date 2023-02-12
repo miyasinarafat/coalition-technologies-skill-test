@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Domain\Project\Project;
 use App\Domain\Project\ProjectRepositoryInterface;
+use App\Domain\Task\Task;
 use App\Domain\Task\TaskFactory;
 use App\Domain\Task\TaskListFactory;
 use App\Domain\Task\TaskListRepositoryInterface;
@@ -97,7 +98,9 @@ class TaskController extends Controller
     public function update(Request $request, int $project, int $task): RedirectResponse
     {
         $candidateTask = TaskFactory::fromArray(array_merge($request->all(), ['user_id' => Auth::id()]));
-        $this->taskRepository->update($task, $candidateTask);
+        /** @var Task $dbTask */
+        $dbTask = $this->taskRepository->getById($project, $task);
+        $this->taskRepository->update($dbTask, $candidateTask);
 
         if ($request->has('redirectUrl')) {
             return redirect($request->input('redirectUrl'));
@@ -121,7 +124,9 @@ class TaskController extends Controller
             'position' => 'required|numeric',
         ]);
 
-        $this->taskRepository->move($task, $validData['list_id'], $validData['position']);
+        /** @var Task $dbTask */
+        $dbTask = $this->taskRepository->getById($project, $task);
+        $this->taskRepository->move($dbTask, $validData['list_id'], $validData['position']);
 
         return redirect()->back();
     }
