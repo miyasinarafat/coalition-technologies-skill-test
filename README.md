@@ -41,6 +41,12 @@ npm run build
 http://127.0.0.1:8000/
 ```
 
+## Run unit test
+```bash
+php artisan test
+```
+![image](https://user-images.githubusercontent.com/16781160/218310103-7a63602b-1936-4716-bebf-4fc81a48287e.png)
+
 ## Demo
 ### Youtube video
 [![Coalition Technologies Skill Test - Youtube](https://user-images.githubusercontent.com/16781160/218309627-5c68c648-311f-4216-950a-d8a0f9402519.png)](https://www.youtube.com/watch?v=N0XRG-7-RCg)
