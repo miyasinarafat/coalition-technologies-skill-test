@@ -18,6 +18,7 @@ class TaskFactory
         $rules = [
             'title' => 'required|string|min:1|max:255',
             'description' => 'nullable|string',
+            'user_id' => 'required|integer|exists:App\Models\User,id',
             'list_id' => 'required|integer|exists:App\Domain\Task\TaskList,id',
             'project_id' => 'required|integer|exists:App\Domain\Project\Project,id',
         ];
@@ -29,7 +30,7 @@ class TaskFactory
             'description' => $validData['description'] ?? null,
             'list_id' => $validData['list_id'],
             'project_id' => $validData['project_id'],
-            'user_id' => Auth::id(),
+            'user_id' => $validData['user_id'],
         ]);
     }
 }

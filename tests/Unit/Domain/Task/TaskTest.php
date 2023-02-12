@@ -3,7 +3,6 @@
 namespace Tests\Unit\Domain\Task;
 
 use App\Domain\Task\Task;
-use App\Domain\Task\TaskList;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 

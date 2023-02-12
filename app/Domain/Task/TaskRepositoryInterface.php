@@ -19,10 +19,11 @@ interface TaskRepositoryInterface
 
     /**
      * @param int $task
+     * @param int $list
      * @param int $position
      * @return Task
      */
-    public function move(int $task, mixed $position): Task;
+    public function move(int $task, int $list, mixed $position): Task;
 
     /**
      * @param int $projectId

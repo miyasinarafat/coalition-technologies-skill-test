@@ -64,7 +64,7 @@ class TaskController extends Controller
      */
     public function listStore(Request $request): RedirectResponse
     {
-        $list = TaskListFactory::fromArray($request->all());
+        $list = TaskListFactory::fromArray(array_merge($request->all(), ['user_id' => Auth::id()]));
         $this->taskListRepository->create($list);
 
         return redirect()->back();
@@ -79,7 +79,7 @@ class TaskController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        $task = TaskFactory::fromArray($request->all());
+        $task = TaskFactory::fromArray(array_merge($request->all(), ['user_id' => Auth::id()]));
         $this->taskRepository->create($task);
 
         return redirect()->back();
@@ -96,7 +96,7 @@ class TaskController extends Controller
      */
     public function update(Request $request, int $project, int $task): RedirectResponse
     {
-        $candidateTask = TaskFactory::fromArray($request->all());
+        $candidateTask = TaskFactory::fromArray(array_merge($request->all(), ['user_id' => Auth::id()]));
         $this->taskRepository->update($task, $candidateTask);
 
         if ($request->has('redirectUrl')) {
@@ -121,7 +121,7 @@ class TaskController extends Controller
             'position' => 'required|numeric',
         ]);
 
-        $this->taskRepository->move($task, $validData['position']);
+        $this->taskRepository->move($task, $validData['list_id'], $validData['position']);
 
         return redirect()->back();
     }

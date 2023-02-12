@@ -52,7 +52,7 @@ class ProjectController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        $project = ProjectFactory::fromArray($request->all());
+        $project = ProjectFactory::fromArray(array_merge($request->all(), ['user_id' => Auth::id()]));
         $this->projectRepository->create($project);
 
         return redirect()
@@ -91,7 +91,7 @@ class ProjectController extends Controller
      */
     public function update(Request $request, int $project): RedirectResponse
     {
-        $candidateProject = ProjectFactory::fromArray($request->all());
+        $candidateProject = ProjectFactory::fromArray(array_merge($request->all(), ['user_id' => Auth::id()]));
 
         /** @var Project $dbProject */
         $dbProject = $this->projectRepository->getById($project, Auth::id());
