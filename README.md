@@ -9,7 +9,9 @@ This Laravel application, you can include the packages with the following comman
 ```bash
 composer install
 ```
-
+```bash
+npm install
+```
 ### 2. Add the DB credentials
 
 Next make sure to create a new database and add your database credentials to your .env file:

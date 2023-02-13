@@ -6,7 +6,7 @@ use App\Domain\Task\TaskList;
 use App\Domain\Task\TaskListRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
 
-class TaskListRepository implements TaskListRepositoryInterface
+final class TaskListRepository implements TaskListRepositoryInterface
 {
     /**
      * @param int $projectId

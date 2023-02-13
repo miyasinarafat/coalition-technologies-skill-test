@@ -6,7 +6,7 @@ use App\Domain\Project\Project;
 use App\Domain\Project\ProjectRepositoryInterface;
 use Illuminate\Pagination\LengthAwarePaginator;
 
-class ProjectRepository implements ProjectRepositoryInterface
+final class ProjectRepository implements ProjectRepositoryInterface
 {
     /**
      * @param int $userId

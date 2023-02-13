@@ -6,7 +6,7 @@ use App\Domain\Task\Task;
 use App\Domain\Task\TaskList;
 use App\Domain\Task\TaskRepositoryInterface;
 
-class TaskRepository implements TaskRepositoryInterface
+final class TaskRepository implements TaskRepositoryInterface
 {
     /**
      * @param Task $task

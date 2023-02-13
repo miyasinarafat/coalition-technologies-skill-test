@@ -12,7 +12,7 @@ use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class ProjectController extends Controller
+final class ProjectController extends Controller
 {
     public function __construct(
         private readonly ProjectRepositoryInterface $projectRepository,

@@ -16,7 +16,7 @@ use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class TaskController extends Controller
+final class TaskController extends Controller
 {
     public function __construct(
         private readonly ProjectRepositoryInterface $projectRepository,
